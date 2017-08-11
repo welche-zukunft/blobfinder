@@ -15,6 +15,8 @@ void ofApp::setup(){
 	minBlobSize = 1;
 	maxBlobSize = 10;
 	blobNum = 1;
+
+	sender.setup(HOST, SPORT); //set up sender
 }
 
 void ofApp::update(){
@@ -55,6 +57,12 @@ void ofApp::draw(){
 			ofDrawCircle(centroid, 20);
 			//ss << centroid << endl;
 			blobLog = ofToString(centroid);
+
+            ofxOscMessage m;
+            m.setAddress("/position");
+            m.addStringArg(blobLog);
+            sender.sendMessage(m);
+
 		} else {
 			//ss << " NOT FOUND." << endl;
 			blobLog = " NOT FOUND.";
